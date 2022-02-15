@@ -25,11 +25,11 @@ icons <- awesomeIcons(
 m <- leaflet(data = geocoded_list) %>% 
   addTiles() %>% 
   setView( lng = 2.349014, lat = 48.864716, zoom = 12 ) %>% 
-  addAwesomeMarkers(label = ~name, popup = ~followers, icon=icons, group = "Follow Magnitude (Default)") %>%
-  addMarkers(clusterOptions = markerClusterOptions(), group = "Cluster") %>%
+  addAwesomeMarkers(label = ~name, popup = ~as.character(followers), icon=icons, group = "Follow Count") %>%
+  addMarkers(clusterOptions = markerClusterOptions(), group = "Clusters") %>%
   addProviderTiles(providers$CartoDB.Positron) %>%
   addLayersControl(
-    baseGroups = c("Follow Magnitude (Default)", "Cluster"),
+    baseGroups = c("Follow Count", "Clusters"),
     options = layersControlOptions(collapsed = FALSE)
   )
 m
