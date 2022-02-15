@@ -26,7 +26,7 @@ m <- leaflet(data = geocoded_list) %>%
   addTiles() %>% 
   setView( lng = 2.349014, lat = 48.864716, zoom = 12 ) %>% 
   addAwesomeMarkers(label = ~name, popup = ~as.character(followers), icon=icons, group = "Follow Count") %>%
-  addMarkers(clusterOptions = markerClusterOptions(), group = "Clusters") %>%
+  addMarkers(clusterOptions = markerClusterOptions(), popup = ~as.character(followers), group = "Clusters") %>%
   addProviderTiles(providers$CartoDB.Positron) %>%
   addLayersControl(
     baseGroups = c("Follow Count", "Clusters"),
@@ -35,6 +35,6 @@ m <- leaflet(data = geocoded_list) %>%
 m
 
 
-saveWidget(m, file=paste0( getwd(),width="1000px", "/backgroundMapTile.html"))
+saveWidget(m, file=paste0(getwd(), "/backgroundMapTile.html"))
 
 
