@@ -3,12 +3,35 @@ library(leaflet)
 library(htmlwidgets)
 library(readr)
 geocoded_list <- read_csv("geocoded-list.csv")
+data <- geocoded_list
+getColor <- function(data) {
+  sapply(data$followers, function(followers) {
+    if(followers <= 1000) {
+      "green"
+    } else if(followers <= 10000) {
+      "orange"
+    } else {
+      "red"
+    } })
+}
+
+icons <- awesomeIcons(
+  icon = 'ios-close',
+  iconColor = 'black',
+  library = 'ion',
+  markerColor = getColor(data)
+)
 
 m <- leaflet(data = geocoded_list) %>% 
   addTiles() %>% 
   setView( lng = 2.349014, lat = 48.864716, zoom = 12 ) %>% 
-  addMarkers(label = ~name, clusterOptions = markerClusterOptions()) %>%
-  addProviderTiles(providers$CartoDB.Positron)
+  addAwesomeMarkers(label = ~name, popup = ~followers, icon=icons, group = "Follow Magnitude (Default)") %>%
+  addMarkers(clusterOptions = markerClusterOptions(), group = "Cluster") %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addLayersControl(
+    baseGroups = c("Follow Magnitude (Default)", "Cluster"),
+    options = layersControlOptions(collapsed = FALSE)
+  )
 m
 
 
